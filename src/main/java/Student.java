@@ -18,7 +18,7 @@ public class Student {
         this.PhoneNumber = Phone;
         this.Fine = 0;
         this.Lib = Library;
-        this.BookIssued = null;
+        this.BookIssued = new Vector <>();
     }
 
     public String getName() {
@@ -33,12 +33,17 @@ public class Student {
     public Vector <Book> getIssued() {
         return this.BookIssued;
     }
+    public int getFine(){
+        return this.Fine;
+    }
 
     public void view_book(){
         Lib.listAllBooks();
     }
+
     public void issue_book(){
         if (this.Fine!=0){
+            System.out.println("Fine due: "+ this.Fine);
             System.out.println("Please pay your pending fine before issuing another book!");
         }
         else{
@@ -54,19 +59,29 @@ public class Student {
                 Book toIssue = Lib.issue_book(bookID);
                 if (toIssue!=null){
                     this.BookIssued.add(toIssue);
+                    System.out.println("Book ID: "+bookID+" has been issued!");
+                }
+                else{
+                    System.out.println("Either no such book with the given ID exists currently!");
                 }
             }
         }
     }
     public void return_book(){
         if (!this.BookIssued.isEmpty()){
+            System.out.println("Enter the book ID you want to return: ");
             int ID = input.nextInt();
             input.nextLine();
 
             Book ToReturn = Lib.return_book(this,ID);
             if (ToReturn!=null){
                 this.update_fine();
+
+                if (this.Fine>0){
+                    System.out.println("You have an pending fine of "+this.Fine);
+                }
                 this.BookIssued.remove(ToReturn);
+                System.out.println("The book has been returned!");
             }
         }
         else{
@@ -79,12 +94,34 @@ public class Student {
                 int days = Duration.between(i.getIssueTime(), Instant.now()).toSecondsPart();
 
                 if (days>10){
-                    this.Fine+=days;
+                    this.Fine=this.Fine+(days-10)*3;
                 }
             }
         }
     }
     public void pay_fine(){
         this.Fine=0;
+        System.out.println("Your fines have been cleared!");
+    }
+    public Student login(){
+        System.out.println("Please enter your student ID: ");
+        String ID = input.nextLine();
+        while (ID.length()!=10 || !isNumeric(ID)){
+            System.out.println("Invalid phone number! Please try again");
+            ID = input.nextLine();
+        }
+
+        Student student = Lib.getStudent(ID);
+        if (student!=null){
+            System.out.println("You have been logged in!");
+        }
+        else{
+            System.out.println("Not a valid ID! Please try again");
+        }
+        return student;
+    }
+
+    public static boolean isNumeric(String str) {
+        return str.matches("\\d+");
     }
 }

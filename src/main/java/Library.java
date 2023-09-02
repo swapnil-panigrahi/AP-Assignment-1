@@ -16,7 +16,13 @@ public class Library {
 
     public void add_book(int bookID, String title, String author){
         int copies = 1;
+        boolean success = true;
         for (Book i : this.BookList){
+            if (i.getID()==bookID){
+                System.out.println("Book with the given ID already exists!");
+                success = false;
+                break;
+            }
             if (Objects.equals(i.getAuthor(), author) && Objects.equals(i.getTitle(), title)){
                 i.increaseCopies();
                 copies++;
@@ -24,11 +30,11 @@ public class Library {
         }
 
         new_book = new Book(bookID, title, author, copies);
-        BookList.add(new_book);
+        if (success) BookList.add(new_book);
     }
     public Book issue_book(int ID){
         for(Book i : this.BookList){
-           if (i.getID()==ID) {
+           if (i.getID()==ID && !i.isIssued()) {
                i.issueBook();
                return i;
            }
@@ -64,6 +70,11 @@ public class Library {
     }
     public void add_student(String name, int age, String phone){
         student = new Student(name,age,phone,this);
+        for (Student i : StudentList){
+            if (Objects.equals(i.getID(), phone)){
+                System.out.println("Student with the given ID already exists!");
+            }
+        }
         StudentList.add(student);
     }
     public void remove_student(String phone){
@@ -92,6 +103,7 @@ public class Library {
                     System.out.println("Title: "+i.getTitle());
                     System.out.println("Author: "+i.getAuthor());
                     System.out.println("Copies: "+i.getCopies());
+                    System.out.println();
                 }
             }
         }
@@ -105,6 +117,16 @@ public class Library {
                 System.out.println("Name: "+i.getName());
                 System.out.println("Age: "+i.getAge());
                 System.out.println("ID: "+i.getID());
+
+                Vector <Book> Books = i.getIssued();
+                if (!Books.isEmpty()){
+                    for (Book j : Books){
+                        System.out.println("Book ID: "+j.getID());
+                        System.out.println("Title: "+j.getTitle());
+                    }
+                }
+                System.out.println(i.getName()+" has pending fine of "+i.getFine());
+                System.out.println();
             }
         }
         else{

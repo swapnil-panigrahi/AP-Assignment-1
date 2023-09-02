@@ -1,10 +1,12 @@
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Main {
     static Scanner input = new Scanner(System.in);
     static Library Lib = new Library();
     static Librarian Librarian = new Librarian(Lib);
-
+    static Student Member = new Student("Dummy",18,"0000000000",Lib);
     private static void printMainMenu(){
         System.out.println("1.\tEnter as a librarian");
         System.out.println("2.\tEnter as a member");
@@ -30,56 +32,83 @@ public class Main {
 
     public static void main(String[] args){
         System.out.println("Welcome to our Library Automation System!");
-        int option;
-        int SubOption;
+        String option;
+        String SubOption;
         do{
             printMainMenu();
-            option = input.nextInt();
-            input.nextLine();
+            option = input.nextLine();
 
-            if (option==1){
+            if (Objects.equals(option, "1")){
                 do{
                     printLibrarianMenu();
-                    SubOption = input.nextInt();
-                    input.nextLine();
+                    SubOption = input.nextLine();
 
-                    if (SubOption==1){
+                    if (Objects.equals(SubOption, "1")){
                         Librarian.add_student();
                     }
-                    else if (SubOption==2){
+                    else if (Objects.equals(SubOption, "2")){
                         Librarian.remove_student();
                     }
-                    else if (SubOption==3){
+                    else if (Objects.equals(SubOption, "3")){
                         Librarian.add_book();
                     }
-                    else if (SubOption==4){
+                    else if (Objects.equals(SubOption, "4")){
                         Librarian.remove_book();
                     }
-                    else if (SubOption==5){
+                    else if (Objects.equals(SubOption, "5")){
                         Librarian.view_students();
                     }
-                    else if (SubOption==6){
+                    else if (Objects.equals(SubOption, "6")){
                         Librarian.view_book();
                     }
-                    else if (SubOption>7){
+                    else if (!Objects.equals(SubOption, "7")){
                         System.out.println("Please enter a valid option!");
                     }
-                }while(SubOption!=7);
+                }while(!Objects.equals(SubOption, "7"));
             }
-            else if (option==2){
-                printMemberMenu();
+            else if (Objects.equals(option, "2")){
+                while (Objects.equals(Member.getID(),"0000000000")) {
+                    Member = Member.login();
+                    if (Member == null)
+                        Member = new Student("Dummy", 18, "0000000000", Lib);
+                }
+
                 do{
-                    SubOption = input.nextInt();
-                    input.nextLine();
+                    printMemberMenu();
+                    SubOption = input.nextLine();
 
+                    if (Objects.equals(SubOption, "1")){
+                        Member.view_book();
+                    }
+                    else if (Objects.equals(SubOption, "2")){
+                        Vector <Book> Issued = Member.getIssued();
 
-                }while(SubOption!=6);
+                        if (!Issued.isEmpty()){
+                            for (Book i : Issued){
+                                System.out.println("Title: "+i.getTitle());
+                                System.out.println("Author: "+i.getAuthor());
+                            }
+                        }
+                        else{
+                            System.out.println("You don't have any book issued!");
+                        }
+                    }
+                    else if (Objects.equals(SubOption, "3")){
+                        Member.issue_book();
+                    }
+                    else if (Objects.equals(SubOption, "4")){
+                        Member.return_book();
+                    }
+                    else if (Objects.equals(SubOption, "5")){
+                        Member.pay_fine();
+                    }
+                    else if (!Objects.equals(SubOption,"6")){
+                        System.out.println("Please enter a valid option!");
+                    }
+                }while(!Objects.equals(SubOption, "6"));
             }
-            else{
-                System.out.println("Please input a valid option!");
-            }
-            option = input.nextInt();
-            input.nextLine();
-        }while(option!=3);
+        }while(!Objects.equals(option, "3"));
+        System.out.println();
+        System.out.println("Deleting Library...");
     }
 }
