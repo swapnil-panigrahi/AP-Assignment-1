@@ -2,9 +2,9 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class Library {
-    private Vector <Student> StudentList;
+    private final Vector <Student> StudentList;
     private Student student;
-    private Vector <Book> BookList;
+    private final Vector <Book> BookList;
     private Book new_book;
 
     public Library(){
@@ -14,15 +14,10 @@ public class Library {
         this.new_book = null;
     }
 
-    public void add_book(int bookID, String title, String author){
+    public void add_book(String title, String author){
+        int bookID=BookList.size();
         int copies = 1;
-        boolean success = true;
         for (Book i : this.BookList){
-            if (i.getID()==bookID){
-                System.out.println("Book with the given ID already exists!");
-                success = false;
-                break;
-            }
             if (Objects.equals(i.getAuthor(), author) && Objects.equals(i.getTitle(), title)){
                 i.increaseCopies();
                 copies++;
@@ -30,7 +25,7 @@ public class Library {
         }
 
         new_book = new Book(bookID, title, author, copies);
-        if (success) BookList.add(new_book);
+        BookList.add(new_book);
     }
     public Book issue_book(int ID){
         for(Book i : this.BookList){
@@ -52,10 +47,14 @@ public class Library {
         return null;
     }
     public void remove_book(int bookID){
+        if (this.BookList.isEmpty()){
+            System.out.println("There are no books in the library!");
+            return;
+        }
         boolean success = false;
         Book temp = null;
         for(Book i : this.BookList){
-            if (i.getID()==bookID){
+            if (i.getID()==bookID && !i.isIssued()){
                 temp = i;
                 success = true;
             }
@@ -68,22 +67,30 @@ public class Library {
             System.out.println("No Book found with ID: "+bookID);
         }
     }
-    public void add_student(String name, int age, String phone){
+    public boolean add_student(String name, int age, String phone){
         student = new Student(name,age,phone,this);
-        for (Student i : StudentList){
+        for (Student i : this.StudentList){
             if (Objects.equals(i.getID(), phone)){
                 System.out.println("Student with the given ID already exists!");
+                return false;
             }
         }
         StudentList.add(student);
+        return true;
     }
     public void remove_student(String phone){
+        if (this.StudentList.isEmpty()){
+            System.out.println("There are no members in the library!");
+            return;
+        }
         boolean success = false;
-        Student temp = null;
+        Student temp = new Student("Dummy", -1, "0000000000", this);
+
         for (Student i : this.StudentList){
-            if (Objects.equals(i.getID(), phone)){
-                temp = i;
+            temp = i;
+            if (Objects.equals(i.getID(), phone) && i.getIssued().isEmpty()){
                 success = true;
+                break;
             }
         }
 
@@ -91,8 +98,25 @@ public class Library {
             System.out.println("Removed Student with ID: " + phone);
             StudentList.remove(temp);
         }
+        else if (!temp.getIssued().isEmpty()){
+            System.out.println("Member has a book issued!");
+        }
         else{
-            System.out.println("No Student registered with ID: " + phone);
+            System.out.println("No member with registered ID: "+phone);
+        }
+    }
+    public void viewAllBooks(){
+        if (!this.BookList.isEmpty()){
+            for (Book i : this.BookList) {
+                System.out.println("ID: "+i.getID());
+                System.out.println("Title: "+i.getTitle());
+                System.out.println("Author: "+i.getAuthor());
+                System.out.println("Copies: "+i.getCopies());
+                System.out.println();
+            }
+        }
+        else{
+            System.out.println("No books available!");
         }
     }
     public void listAllBooks(){

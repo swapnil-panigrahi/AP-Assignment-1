@@ -59,7 +59,7 @@ public class Main {
                         Librarian.view_students();
                     }
                     else if (Objects.equals(SubOption, "6")){
-                        Librarian.view_book();
+                        Librarian.viewAllBooks();
                     }
                     else if (!Objects.equals(SubOption, "7")){
                         System.out.println("Please enter a valid option!");
@@ -87,6 +87,7 @@ public class Main {
                             for (Book i : Issued){
                                 System.out.println("Title: "+i.getTitle());
                                 System.out.println("Author: "+i.getAuthor());
+                                System.out.println("Book ID: "+i.getID());
                             }
                         }
                         else{
@@ -106,6 +107,8 @@ public class Main {
                         System.out.println("Please enter a valid option!");
                     }
                 }while(!Objects.equals(SubOption, "6"));
+
+                Member = new Student("Dummy", -1, "0000000000", Lib);
             }
         }while(!Objects.equals(option, "3"));
         System.out.println();

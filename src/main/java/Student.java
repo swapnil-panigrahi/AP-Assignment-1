@@ -10,7 +10,7 @@ public class Student {
     private final String PhoneNumber;
     private int Fine;
     private final Library Lib;
-    private Vector <Book> BookIssued;
+    private final Vector <Book> BookIssued;
 
     public Student(String Name, int Age, String Phone, Library Library){
         this.Name = Name;
@@ -18,7 +18,7 @@ public class Student {
         this.PhoneNumber = Phone;
         this.Fine = 0;
         this.Lib = Library;
-        this.BookIssued = new Vector <>();
+        this.BookIssued = new Vector<>();
     }
 
     public String getName() {
@@ -53,8 +53,11 @@ public class Student {
 
             else{
                 System.out.println("Enter the Book ID you want to issue: ");
+                while (!input.hasNextInt()){
+                    System.out.println("Please enter valid input!");
+                    input.next();
+                }
                 int bookID = input.nextInt();
-                input.nextLine();
 
                 Book toIssue = Lib.issue_book(bookID);
                 if (toIssue!=null){
@@ -62,7 +65,7 @@ public class Student {
                     System.out.println("Book ID: "+bookID+" has been issued!");
                 }
                 else{
-                    System.out.println("Either no such book with the given ID exists currently!");
+                    System.out.println("No such book with the given ID exists currently!");
                 }
             }
         }
@@ -70,8 +73,11 @@ public class Student {
     public void return_book(){
         if (!this.BookIssued.isEmpty()){
             System.out.println("Enter the book ID you want to return: ");
+            while (!input.hasNextInt()){
+                System.out.println("Please enter valid input!");
+                input.next();
+            }
             int ID = input.nextInt();
-            input.nextLine();
 
             Book ToReturn = Lib.return_book(this,ID);
             if (ToReturn!=null){
@@ -82,6 +88,9 @@ public class Student {
                 }
                 this.BookIssued.remove(ToReturn);
                 System.out.println("The book has been returned!");
+            }
+            else{
+                System.out.println("You haven't issued this book");
             }
         }
         else{
