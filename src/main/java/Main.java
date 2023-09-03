@@ -68,7 +68,7 @@ public class Main {
             }
             else if (Objects.equals(option, "2")){
                 if (!Lib.checkStudent()){
-                    System.out.println("No members in the library!");
+                    System.out.println("No members in library!");
                     continue;
                 }
                 while (Objects.equals(Member.getID(),"0000000000")) {

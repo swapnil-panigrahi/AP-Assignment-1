@@ -102,7 +102,7 @@ public class Library {
 
         for (Student i : this.StudentList){
             temp = i;
-            if (Objects.equals(i.getID(), phone) && i.getIssued().isEmpty()){
+            if (Objects.equals(i.getID(), phone) && i.getIssued().isEmpty() && i.getFine()==0){
                 success = true;
                 break;
             }
@@ -114,6 +114,9 @@ public class Library {
         }
         else if (!temp.getIssued().isEmpty()){
             System.out.println("Member has a book issued!");
+        }
+        else if (temp.getFine()!=0){
+            System.out.println("Member has pending fine!");
         }
         else{
             System.out.println("No member with registered ID: "+phone);
