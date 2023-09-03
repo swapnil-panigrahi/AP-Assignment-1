@@ -1,7 +1,5 @@
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.Vector;
-
 public class Main {
     static Scanner input = new Scanner(System.in);
     static Library Lib = new Library();
@@ -85,18 +83,7 @@ public class Main {
                         Member.view_book();
                     }
                     else if (Objects.equals(SubOption, "2")){
-                        Vector <Book> Issued = Member.getIssued();
-
-                        if (!Issued.isEmpty()){
-                            for (Book i : Issued){
-                                System.out.println("Title: "+i.getTitle());
-                                System.out.println("Author: "+i.getAuthor());
-                                System.out.println("Book ID: "+i.getID());
-                            }
-                        }
-                        else{
-                            System.out.println("You don't have any book issued!");
-                        }
+                        Member.viewIssued();
                     }
                     else if (Objects.equals(SubOption, "3")){
                         Member.issue_book();

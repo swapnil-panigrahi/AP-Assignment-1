@@ -40,7 +40,6 @@ public class Student {
     public void view_book(){
         Lib.listAllBooks();
     }
-
     public void issue_book(){
         if (this.Fine!=0){
             System.out.println("Fine due: "+ this.Fine);
@@ -129,7 +128,18 @@ public class Student {
         }
         return student;
     }
-
+    public void viewIssued(){
+        if (!this.BookIssued.isEmpty()){
+            for (Book i : this.BookIssued){
+                System.out.println("Title: "+i.getTitle());
+                System.out.println("Author: "+i.getAuthor());
+                System.out.println("Book ID: "+i.getID());
+            }
+        }
+        else{
+            System.out.println("You don't have any book issued!");
+        }
+    }
     public static boolean isNumeric(String str) {
         return str.matches("\\d+");
     }

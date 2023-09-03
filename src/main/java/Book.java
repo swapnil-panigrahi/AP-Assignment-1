@@ -41,7 +41,6 @@ public class Book {
     }
     public void returnBook(){
         this.IssueStatus=false;
-        this.Copies++;
     }
     public void increaseCopies(){
         this.Copies++;
