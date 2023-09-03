@@ -67,6 +67,10 @@ public class Main {
                 }while(!Objects.equals(SubOption, "7"));
             }
             else if (Objects.equals(option, "2")){
+                if (!Lib.checkStudent()){
+                    System.out.println("No members in the library!");
+                    continue;
+                }
                 while (Objects.equals(Member.getID(),"0000000000")) {
                     Member = Member.login();
                     if (Member == null)

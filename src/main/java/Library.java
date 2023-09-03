@@ -1,7 +1,9 @@
 import java.util.Objects;
 import java.util.Vector;
+import java.util.Scanner;
 
 public class Library {
+    Scanner input = new Scanner(System.in);
     private final Vector <Student> StudentList;
     private Student student;
     private final Vector <Book> BookList;
@@ -13,7 +15,6 @@ public class Library {
         this.BookList = new Vector<>();
         this.new_book = null;
     }
-
     public void add_book(String title, String author){
         int bookID=BookList.size();
         int copies = 1;
@@ -29,7 +30,7 @@ public class Library {
     }
     public Book issue_book(int ID){
         for(Book i : this.BookList){
-           if (i.getID()==ID && !i.isIssued()) {
+           if (i.getID()==ID && i.isIssued()) {
                i.issueBook();
                return i;
            }
@@ -54,7 +55,7 @@ public class Library {
         boolean success = false;
         Book temp = null;
         for(Book i : this.BookList){
-            if (i.getID()==bookID && !i.isIssued()){
+            if (i.getID()==bookID && i.isIssued()){
                 temp = i;
                 success = true;
             }
@@ -78,10 +79,23 @@ public class Library {
         StudentList.add(student);
         return true;
     }
-    public void remove_student(String phone){
+    public boolean checkStudent(){
+        return !this.StudentList.isEmpty();
+    }
+    public void remove_student(){
+        String phone;
         if (this.StudentList.isEmpty()){
             System.out.println("There are no members in the library!");
             return;
+        }
+        else{
+            System.out.print("Enter the ID of the student to be removed: ");
+            phone = input.nextLine();
+
+            while (phone.length()!=10 || isNumeric(phone)){
+                System.out.println("Invalid Student ID! Please try again");
+                phone = input.nextLine();
+            }
         }
         boolean success = false;
         Student temp = new Student("Dummy", -1, "0000000000", this);
@@ -122,7 +136,7 @@ public class Library {
     public void listAllBooks(){
         if (!this.BookList.isEmpty()){
             for (Book i : this.BookList) {
-                if (!i.isIssued()) {
+                if (i.isIssued()) {
                     System.out.println("ID: "+i.getID());
                     System.out.println("Title: "+i.getTitle());
                     System.out.println("Author: "+i.getAuthor());
@@ -141,7 +155,7 @@ public class Library {
                 System.out.println("Name: "+i.getName());
                 System.out.println("Age: "+i.getAge());
                 System.out.println("ID: "+i.getID());
-
+                System.out.println();
                 Vector <Book> Books = i.getIssued();
                 if (!Books.isEmpty()){
                     for (Book j : Books){
@@ -149,6 +163,7 @@ public class Library {
                         System.out.println("Title: "+j.getTitle());
                     }
                 }
+                System.out.println();
                 System.out.println(i.getName()+" has pending fine of "+i.getFine());
                 System.out.println();
             }
@@ -164,5 +179,8 @@ public class Library {
             }
         }
         return null;
+    }
+    public static boolean isNumeric(String str) {
+        return !str.matches("\\d+");
     }
 }

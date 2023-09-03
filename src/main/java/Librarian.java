@@ -28,14 +28,7 @@ public class Librarian {
             System.out.println("You have been registered! Your phone number will act as your unique ID");
     }
     public void remove_student(){
-        System.out.print("Enter the ID of the student to be removed: ");
-        String phone = input.nextLine();
-
-        while (phone.length()!=10 || isNumeric(phone)){
-            System.out.println("Invalid Student ID! Please try again");
-            phone = input.nextLine();
-        }
-        this.Lib.remove_student(phone);
+        this.Lib.remove_student();
     }
     public void add_book(){
         System.out.print("Title: ");

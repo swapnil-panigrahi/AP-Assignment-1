@@ -38,7 +38,6 @@ public class Book {
     public void issueBook(){
         this.IssueStatus=true;
         this.IssueTime=Instant.now();
-        this.Copies--;
     }
     public void returnBook(){
         this.IssueStatus=false;
